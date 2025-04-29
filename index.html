@@ -133,13 +133,22 @@
     let seconds = 5;
     const counterEl = document.getElementById('counter');
     const interval = setInterval(() => {
-      seconds--;
-      if (counterEl) counterEl.textContent = seconds;
-      if (seconds <= 0) {
+    seconds--;
+    if (counterEl) counterEl.textContent = seconds;
+    if (seconds <= 0) {
         clearInterval(interval);
-        window.close(); // Akan dicoba untuk menutup tab
-      }
+        try {
+        window.close(); 
+        // Kalau window.close() gagal (tab tidak bisa ditutup), fallback ke redirect
+        setTimeout(() => {
+            window.location.href = '/'; // Ganti dengan URL Home atau halaman utama kamu
+        }, 500);
+        } catch (err) {
+        window.location.href = '/'; // fallback redirect
+        }
+    }
     }, 1000);
+
   }
 
   // Jalankan saat halaman selesai dimuat
